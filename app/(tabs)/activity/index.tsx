@@ -5,6 +5,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 export default function Index() {
   const router = useRouter();
   const pathname = usePathname();
+  console.log("pathname : ", pathname);
 
   if (
     ![
@@ -30,37 +31,73 @@ export default function Index() {
     >
       <View>
         <TouchableOpacity onPress={() => router.push(`/activity`)}>
-          <Text>All</Text>
+          <Text style={{ color: pathname === "/activity" ? "red" : "black" }}>
+            All
+          </Text>
         </TouchableOpacity>
       </View>
       <View>
         <TouchableOpacity onPress={() => router.push(`/activity/follows`)}>
-          <Text>Follows</Text>
+          <Text
+            style={{
+              color: pathname === "/activity/follows" ? "red" : "black",
+            }}
+          >
+            Follows
+          </Text>
         </TouchableOpacity>
       </View>
       <View>
         <TouchableOpacity onPress={() => router.push(`/activity/replies`)}>
-          <Text>Replies</Text>
+          <Text
+            style={{
+              color: pathname === "/activity/replies" ? "red" : "black",
+            }}
+          >
+            Replies
+          </Text>
         </TouchableOpacity>
       </View>
       <View>
         <TouchableOpacity onPress={() => router.push(`/activity/mentions`)}>
-          <Text>Mentions</Text>
+          <Text
+            style={{
+              color: pathname === "/activity/mentions" ? "red" : "black",
+            }}
+          >
+            Mentions
+          </Text>
         </TouchableOpacity>
       </View>
       <View>
         <TouchableOpacity onPress={() => router.push(`/activity/quotes`)}>
-          <Text>Quotes</Text>
+          <Text
+            style={{ color: pathname === "/activity/quotes" ? "red" : "black" }}
+          >
+            Quotes
+          </Text>
         </TouchableOpacity>
       </View>
       <View>
         <TouchableOpacity onPress={() => router.push(`/activity/reposts`)}>
-          <Text>Reposts</Text>
+          <Text
+            style={{
+              color: pathname === "/activity/reposts" ? "red" : "black",
+            }}
+          >
+            Reposts
+          </Text>
         </TouchableOpacity>
       </View>
       <View>
         <TouchableOpacity onPress={() => router.push(`/activity/verified`)}>
-          <Text>Verified</Text>
+          <Text
+            style={{
+              color: pathname === "/activity/verified" ? "red" : "black",
+            }}
+          >
+            Verified
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
