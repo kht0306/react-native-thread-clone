@@ -1,5 +1,13 @@
-import { useState } from "react";
-import { Modal, Text, TouchableOpacity, View } from "react-native";
+import { BottomTabBarButtonProps } from "@react-navigation/bottom-tabs";
+import { Ref, useRef, useState } from "react";
+import {
+  Animated,
+  Modal,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs, useRouter } from "expo-router";
@@ -17,12 +25,61 @@ export default function TabLayout() {
     setIsLoginModalOpen(false);
   };
 
+  const AnimatedTabBarButton = ({
+    children,
+    onPress,
+    style,
+    ...restProps
+  }: BottomTabBarButtonProps) => {
+    const scaleValue = useRef(new Animated.Value(1)).current;
+
+    const handlePressOut = () => {
+      Animated.sequence([
+        Animated.spring(scaleValue, {
+          toValue: 1.2,
+          useNativeDriver: true, // gpu사용 여부 옵션
+          speed: 200,
+        }),
+        Animated.spring(scaleValue, {
+          toValue: 1,
+          useNativeDriver: true,
+          speed: 200,
+        }),
+      ]).start();
+    };
+
+    // React Navigation의 props에서 전달되는 ref의 타입과 Pressable이 기대하는 ref의 타입 충돌(React 19, RN 0.81 이슈)을 해결합니다.
+    const { ref, ...otherProps } = restProps as Omit<
+      BottomTabBarButtonProps,
+      "children" | "onPress" | "style"
+    >;
+
+    return (
+      <Pressable
+        ref={ref as Ref<View>}
+        {...otherProps}
+        onPress={onPress}
+        onPressOut={handlePressOut}
+        style={[
+          { flex: 1, justifyContent: "center", alignItems: "center" },
+          style,
+        ]}
+        android_ripple={{ borderless: false, radius: 0 }}
+      >
+        <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
+          {children}
+        </Animated.View>
+      </Pressable>
+    );
+  };
+
   return (
     <>
       <Tabs
         backBehavior="history"
         screenOptions={{
           headerShown: false,
+          tabBarButton: (props) => <AnimatedTabBarButton {...props} />,
         }}
       >
         <Tabs.Screen
